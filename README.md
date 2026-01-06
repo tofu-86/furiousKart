@@ -6,7 +6,7 @@ It was scraped together in a few months and was a really fun project to work on.
 
 
 # Download
-simply download the "furiousKart download" folder and run the exe.  
+simply download the "furiousKart download" folder and run the exe. (compiled version, feel free to compile yourself)    
 
 Run a multiplayer server by just clicking "multipalyer" when in game and click start when all players are in game  
 
