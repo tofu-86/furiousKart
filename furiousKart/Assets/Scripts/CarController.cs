@@ -24,6 +24,9 @@ public class CarController : MonoBehaviourPunCallbacks
     public WheelColliders colliders;
     public WheelMeshes wheelMeshes;
 
+    public Collider kartCollider;
+
+    // wheel particle variable and objects.
     public WheelSmoke wheelSmoke;
     public GameObject SmokePrefab;
 
@@ -48,7 +51,7 @@ public class CarController : MonoBehaviourPunCallbacks
    
     private float speed;
 
-    WheelFrictionCurve wfcSlip = new WheelFrictionCurve();
+    WheelFrictionCurve wfcRearS = new WheelFrictionCurve();
     WheelFrictionCurve wfcRearF = new WheelFrictionCurve();
     WheelFrictionCurve wfcFrontF = new WheelFrictionCurve();
     WheelFrictionCurve wfcFrontS = new WheelFrictionCurve();
@@ -64,6 +67,8 @@ public class CarController : MonoBehaviourPunCallbacks
     public float currentLapTime;
     public float bestLapTime;
 
+    public bool slipDown = false;
+
 
     //Animation curve to change the steering sensitivity based on speed to allow for smoother wheel movements.
     //dynamically changing it
@@ -77,7 +82,7 @@ public class CarController : MonoBehaviourPunCallbacks
 
         photonView.RPC("syncSmoke", RpcTarget.All,gameObject.GetComponent<PhotonView>().ViewID);
 
-        InstantiateWheelValues();
+        resetWheelValues();
 
 
     }
@@ -92,8 +97,12 @@ public class CarController : MonoBehaviourPunCallbacks
 
         kartController.InstantiateSmoke();
     }
+
+
+    //function to copy smoke onto wheels.
     void InstantiateSmoke()
     {
+        //copies smoke prefab to position of each wheel.
         wheelSmoke.FRwheel = Instantiate(SmokePrefab, colliders.FRwheel.transform.position, Quaternion.identity, colliders.FRwheel.transform)
     .GetComponent < ParticleSystem>();
         wheelSmoke.FLwheel = Instantiate(SmokePrefab, colliders.FLwheel.transform.position, Quaternion.identity, colliders.FLwheel.transform)
@@ -105,27 +114,30 @@ public class CarController : MonoBehaviourPunCallbacks
     }
 
 
-    void InstantiateWheelValues()
+    void resetWheelValues()
     {
         rearWheelColliderValues();
         frontWheelColliderValues();
 
-        //Quality of life; when importing new vehicles cars will have the same wheel collider values/
-        //saves time when adding new cars instead of manually changing values
-        //when powerups change wheelstiffness, it will st everything else to 0, the values changed will need
-        //to be instantiated.
+        /*Quality of life; when importing new 
+         * vehicles cars will have the same wheel collider
+         * values/saves time when adding new cars instead of manually changing values
+         * when powerups change wheelstiffness,
+         * it will st everything else to 0, the values changed will need
+         * to be reset.
+        */
 
     }
     void rearWheelColliderValues()
     {
-        wfcSlip.extremumSlip = 0.2f;
-        wfcSlip.extremumValue = 0.5f;
-        wfcSlip.asymptoteSlip = 0.3f;
-        wfcSlip.asymptoteValue = 0.4f;
-        wfcSlip.stiffness = 1f;
-        //Instantiating RearWheelSideways Values
-        colliders.RLwheel.sidewaysFriction = wfcSlip;
-        colliders.RRwheel.sidewaysFriction = wfcSlip;
+        wfcRearS.extremumSlip = 0.2f;
+        wfcRearS.extremumValue = 0.5f;
+        wfcRearS.asymptoteSlip = 0.3f;
+        wfcRearS.asymptoteValue = 0.4f;
+        wfcRearS.stiffness = 1f;
+        //Declaring RearWheelSideways Values
+        colliders.RLwheel.sidewaysFriction = wfcRearS;
+        colliders.RRwheel.sidewaysFriction = wfcRearS;
         //applying to rearwheels as sideways friction
 
 
@@ -134,7 +146,7 @@ public class CarController : MonoBehaviourPunCallbacks
         wfcRearF.asymptoteSlip = 0.8f;
         wfcRearF.asymptoteValue = 0.5f;
         wfcRearF.stiffness = 1f;
-        //Instantiating RearWheelForward Values
+        //Declaring RearWheelForward Values
 
         colliders.RLwheel.forwardFriction = wfcRearF;
         colliders.RRwheel.forwardFriction = wfcRearF;
@@ -148,7 +160,7 @@ public class CarController : MonoBehaviourPunCallbacks
         wfcFrontF.asymptoteSlip = 0.8f;
         wfcFrontF.asymptoteValue = 0.5f;
         wfcFrontF.stiffness = 1.35f;
-        //Instantiating  FrontWheelForward values
+        //Declaring FrontWheelForward values
 
         colliders.FLwheel.forwardFriction = wfcFrontF;
         colliders.FRwheel.forwardFriction = wfcFrontF;
@@ -159,10 +171,11 @@ public class CarController : MonoBehaviourPunCallbacks
         wfcFrontS.asymptoteSlip = 0.5f;
         wfcFrontS.asymptoteValue = 0.75f;
         wfcFrontS.stiffness = 1.3f;
-        //Instantiating 
+        //Declaring FrontWheelSideways values 
 
         colliders.FLwheel.sidewaysFriction = wfcFrontS;
         colliders.FRwheel.sidewaysFriction = wfcFrontS;
+        //Applying FrontWheels as sideways Friction
     }
 
 
@@ -172,19 +185,10 @@ public class CarController : MonoBehaviourPunCallbacks
         if (!SpawnCars.instance.disableCarMovement) // If the startingRace is false, meaning the race has started, the cars are allowed to drive.
         {
 
-        
-
             currentLapTime += Time.deltaTime; // every frame call, time will go up. 
-
 
             var timeSpan = System.TimeSpan.FromSeconds(currentLapTime); // converts currentLapTime to timespan
             canvasScreen.currentLapTimeText.text = string.Format("{0:00}m{1:00}.{2:000}s", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds); // formatting time and setting it on the canvas
-
-    
-        
-
-
-
 
             speed = rb.velocity.magnitude;
 
@@ -196,7 +200,7 @@ public class CarController : MonoBehaviourPunCallbacks
             applyBrake();
             CheckParticles();
             UpdateWheelPos();
-            bannanaCount();
+            bannanaSlip();
 
        
         }
@@ -251,26 +255,43 @@ public class CarController : MonoBehaviourPunCallbacks
                 brakeInput = 0;
             }
 
-            if (throttleInput < -0.1)
+
+            if(Input.GetKeyDown(KeyCode.E)) // checks for input E
             {
-
-                bannanaSlip();
-
+                Debug.Log("helo");
+                resetKart(); // calls function resetKart;
             }
+
+
+
         }
 
     }
 
+    void resetKart()
+    {
+        int lastCheckpoint = nextCheckpoint - 1;  // getting the last Checkpoint
+        if (lastCheckpoint < 0) // if the next checkpoint is zero in the array, the value will be negative.
+        {
+            lastCheckpoint = checkpointManager.instance.checkPointArray.Length - 1; // this will get the value of the last checkpoint.
+        }
+
+        transform.position = checkpointManager.instance.checkPointArray[lastCheckpoint].transform.position; // moving the position of the model and rigidbody to the checkpoint location. 
+        rb.transform.position = transform.position = checkpointManager.instance.checkPointArray[lastCheckpoint].transform.position;
+
+        rb.velocity = Vector3.zero; // sets velocity to zero to account for momentum that the car may have when reset.
 
 
+    }
+    /*
     void bannanaSlip()
     {
         currentFrame = Time.frameCount;
         nextFrameComparison = currentFrame + 250;
-        wfcSlip.stiffness = 1f;
+        wfcRearS.stiffness = 1f;
      
-        colliders.RLwheel.sidewaysFriction = wfcSlip;
-        colliders.RRwheel.sidewaysFriction = wfcSlip;
+        colliders.RLwheel.sidewaysFriction = wfcRearS;
+        colliders.RRwheel.sidewaysFriction = wfcRearS;
 
     }
     // write about how you had to instanstiate wheelcollider settings
@@ -278,12 +299,32 @@ public class CarController : MonoBehaviourPunCallbacks
     {
         if (Time.frameCount > nextFrameComparison)
         {
-            wfcSlip.stiffness = 1f;
-            colliders.RLwheel.sidewaysFriction = wfcSlip;
-            colliders.RRwheel.sidewaysFriction = wfcSlip;
+            wfcRearS.stiffness = 1f;
+            colliders.RLwheel.sidewaysFriction = wfcRearS;
+            colliders.RRwheel.sidewaysFriction = wfcRearS;
         }
     }
 
+    */
+
+    void bannanaSlip()
+    {
+        if(slipDown)
+        {
+            //setting rear wheel friction really low, so kart is hard to control
+            wfcRearS.stiffness = 0.5f;
+
+            colliders.RLwheel.sidewaysFriction = wfcRearS;
+            colliders.RRwheel.sidewaysFriction = wfcRearS;
+        }
+        else
+        {
+            // once off, values for wheels reset.
+            resetWheelValues();
+        }
+
+
+    }
 
     void applyBrake()
     {
@@ -326,14 +367,14 @@ public class CarController : MonoBehaviourPunCallbacks
         //as steeringInput is a range from -1 and 1, the angles will adjust for the ranges between total left and right.
 
         float steeringAngle = steeringInput * steeringCurve.Evaluate(speed);
-        
 
 
-        
-
-        if(movingDirection>0 && colliders.RLwheel.motorTorque>0)
+        if (movingDirection>0 && colliders.RLwheel.motorTorque>0) //Validates movement to check if vehicle is going forward and drifting.
         {
+            //using the singed angle, we can work out the angle measurement of both magnitude of rotation, and also direction.
+            //tells us how much the car is deviating from its intended direction then adds it to the steering angle to counter it.
             steeringAngle += Vector3.SignedAngle(transform.forward, rb.velocity + transform.forward, Vector3.up);
+            //keeps the steering angle between -90 and 90 to prevent overcorrections.
             steeringAngle = Mathf.Clamp(steeringAngle, -90f, 90f);
         }
 
@@ -346,9 +387,10 @@ public class CarController : MonoBehaviourPunCallbacks
     }
 
 
-
+    //checks for drift and applies particles.
     void CheckParticles()
     {
+        //array to see if wheels hit ground.
         WheelHit[] wheelHits = new WheelHit[4];
         colliders.FRwheel.GetGroundHit(out wheelHits[0]);
         colliders.FLwheel.GetGroundHit(out wheelHits[1]);
@@ -356,16 +398,21 @@ public class CarController : MonoBehaviourPunCallbacks
         colliders.RRwheel.GetGroundHit(out wheelHits[2]);
         colliders.RLwheel.GetGroundHit(out wheelHits[3]);
 
+        //how much the wheels are allowed to slip before particles are applied.
         float slipAllowance = 1.5f;
 
+
+        // if the wheels touching grounds slip is larger than the slip allowence, the drift particles are played.
         if ((Mathf.Abs(wheelHits[0].sidewaysSlip) + Mathf.Abs(wheelHits[0].forwardSlip) > slipAllowance))
         {
             wheelSmoke.FRwheel.Play();
         }
         else 
         {
-            wheelSmoke.FRwheel.Stop();
+            wheelSmoke.FRwheel.Stop(); // otherwise, it is stopped. 
         }
+
+        //repeated for each wheel.
 
         if ((Mathf.Abs(wheelHits[1].sidewaysSlip) + Mathf.Abs(wheelHits[1].forwardSlip) > slipAllowance))
         {
@@ -436,8 +483,8 @@ public class CarController : MonoBehaviourPunCallbacks
             {
                 nextCheckpoint = 0; // reset nextCheckpoint therefore lap completed
                 lapComplete();
-                 
-               
+
+                
             }
 
         }
@@ -451,12 +498,31 @@ public class CarController : MonoBehaviourPunCallbacks
         {
             bestLapTime = currentLapTime;
         }
-        currentLapTime = 0; //  reset to zero as lap has been completed.
 
-        var timeSpan = System.TimeSpan.FromSeconds(bestLapTime); // converts bestLapTime to timespan
-        canvasScreen.bestLapTimeText.text = string.Format("{0:00}m{1:00}.{2:000}s", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds); // formatting time and setting it as bestTime on canvas
 
-        canvasScreen.LapDisplay.text = currentLap + "/" + checkpointManager.instance.totalLapCount; // Changing text on canvas
+
+        if (currentLap <= checkpointManager.instance.totalLapCount) // checking if there are still laps to be completed.
+        {
+            currentLapTime = 0; //  reset to zero as lap has been completed.
+
+            var timeSpan = System.TimeSpan.FromSeconds(bestLapTime); // converts bestLapTime to timespan
+            canvasScreen.bestLapTimeText.text = string.Format("{0:00}m{1:00}.{2:000}s", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds); // formatting time and setting it as bestTime on canvas
+
+            canvasScreen.LapDisplay.text = currentLap + "/" + checkpointManager.instance.totalLapCount; // Changing text on canvas
+
+        }
+        else
+        {
+            SpawnCars.instance.disableCarMovement = true; // if all laps have been crossed, end race. 
+            brakeInput = 1f;
+            kartCollider.enabled = false;
+            
+        }
+
+
+
+
+
     }
 
 }
@@ -484,6 +550,8 @@ public class WheelMeshes //holds wheelmeshes or the art
     public MeshRenderer RLwheel;
 }
 
+
+//class to hold particles for wheels.
 [System.Serializable]
 public class WheelSmoke
 {

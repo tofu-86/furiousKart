@@ -384,6 +384,8 @@
 "Assets/Photon/PhotonChat/Demos/DemoChat/IgnoreUiRaycastWhenInactive.cs"
 "Assets/Photon/PhotonChat/Demos/DemoChat/NamePickGui.cs"
 "Assets/Photon/PhotonRealtime/Demos/DemoLoadBalancing/ConnectAndJoinRandomLb.cs"
+"Assets/powerUpManager.cs"
+"Assets/powerUpScripts/slipDown.cs"
 "Assets/Resources/NetworkedPlayer.cs"
 "Assets/Scripts/CameraController.cs"
 "Assets/Scripts/CarController.cs"

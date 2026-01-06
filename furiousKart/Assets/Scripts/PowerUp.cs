@@ -9,7 +9,6 @@ public class PowerUp : MonoBehaviour
 
     public GameObject afterEffect; // reference to effect.
 
-    public GameObject playerCar; // reference to vehicle object
 
     [SerializeField]
     private GameObject powerupArt; // reference to art to disable later.
@@ -45,18 +44,11 @@ public class PowerUp : MonoBehaviour
 
         Instantiate(afterEffect, transform.position, transform.rotation); // creating a copy of the gameobject afterEffect at the position and rotation of the powerup
 
-        GameObject.FindGameObjectWithTag("GreenCar").GetComponent<CarController>().engineStrength *= multiplier;
-        //player.GetComponent<CarController>().engineStrength *= multiplier;
-        // note to self, apply collider onto parent car itself.
 
-        //playerCar.GetComponent<CarController>().engineStrength *= multiplier;
-        /* Now with the reference of the playerCar gameobject
-                                                                               * it accesses the CarController component attached
-                                                                               * then modifies the engineStrength property by the magnitude of the
-                                                                               * multiplier. */
-
-
-        //CarController returnedCar = GameObject.FindGameObjectWithTag("player").GetComponent<CarController>();
+        player.GetComponent<CarController>().engineStrength *= multiplier; /* by applying the collider directly to the
+                                                                            * parent class with the player tag,
+                                                                            * it no longer requires a reference to the playercar. 
+                                                                            */
 
         powerupArt.GetComponent<MeshRenderer>().enabled = false; // Parent art disabled, making it disapear.
         GetComponent<Collider>().enabled = false; // disables collider on powerup therefore interactions cannot occur. 
@@ -64,8 +56,7 @@ public class PowerUp : MonoBehaviour
         yield return new WaitForSeconds(WaitSeconds); /* Makes the coroutine wait the declared time of WaitSeconds,
                                                        * execution is paused at this point of code but everything else will continue to run. */
 
-        GameObject.FindGameObjectWithTag("GreenCar").GetComponent<CarController>().engineStrength /= multiplier;
-        //playerCar.GetComponent<CarController>().engineStrength /= multiplier; // reversing multiplier effect.
+        player.GetComponent<CarController>().engineStrength /= multiplier;
         Destroy(gameObject); // make object disapear once picked up.
     }
 }

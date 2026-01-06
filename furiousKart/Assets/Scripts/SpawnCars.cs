@@ -25,7 +25,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
     public Transform[] spawnPoint; // creating an array for the spawn points
 
 
-    
+
     GameObject pKart = null;
 
     public GameObject startRace; // reference to button. 
@@ -54,7 +54,6 @@ public class SpawnCars : MonoBehaviourPunCallbacks
 
 
 
-
         startPos = spawnPoint[PhotonNetwork.CurrentRoom.PlayerCount - 1].position;
         startRot = spawnPoint[PhotonNetwork.CurrentRoom.PlayerCount - 1].rotation;
 
@@ -63,7 +62,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
         startRace.SetActive(false); // disable button for everyone.
         if (PhotonNetwork.IsConnected)
         {
-            if (PhotonNetwork.IsMasterClient) 
+            if (PhotonNetwork.IsMasterClient)
             {
                 startRace.SetActive(true); // button is enabled for the host. 
             }
@@ -74,14 +73,13 @@ public class SpawnCars : MonoBehaviourPunCallbacks
         }
 
     }
-  
+
 
     IEnumerator delayInstantiation(Vector3 startPos, Quaternion startRot)
     {
 
         yield return new WaitForSeconds(waitSec);
         pKart = PhotonNetwork.Instantiate(vehicleFabs[playerKart].name, startPos, startRot, 0);
-       // pKart = PhotonNetwork.Instantiate(vehicleFabs[playerKart].name, startPos, startRot, 0);
         Camera kartCamera = pKart.GetComponentInChildren<Camera>();
         pKart.GetComponent<CarController>().enabled = true;
         pKart.GetComponentInChildren<Camera>().enabled = true;
@@ -93,7 +91,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if(startingRace)
+        if (startingRace)
         {
             startCounter -= Time.deltaTime; // as a second passes
             if (startCounter <= 0)
@@ -110,7 +108,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
                     startingRace = false; // As the countDown is now 0, the race starts. 
                     disableCarMovement = false; // car movement enabled.
                     StartCoroutine(delayGoText());
-                    
+
                 }
             }
 
@@ -124,7 +122,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
 
     public void BeginGame()
     {
-        if(PhotonNetwork.IsMasterClient) // checks if its the host.
+        if (PhotonNetwork.IsMasterClient) // checks if its the host.
         {
             photonView.RPC("startGame", RpcTarget.All, null); // runs it on all connected clients
         }

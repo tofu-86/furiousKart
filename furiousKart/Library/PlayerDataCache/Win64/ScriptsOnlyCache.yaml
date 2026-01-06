@@ -4,8 +4,10 @@ ScriptsOnlyBuild:
     - CameraController
     - CarController
     - NetworkedPlayer
+    - PowerUp
     - canvasManager
     - checkPointChecker
+    - slipDown
     Assembly-CSharp.dll:
     - CameraController
     - CarController
@@ -20,6 +22,8 @@ ScriptsOnlyBuild:
     - checkpoints
     - chooseCar
     - gameManager
+    - powerUpManager
+    - slipDown
     PhotonUnityNetworking:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -36,8 +40,6 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.PunBasics.PlayerUI
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
-    PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonRigidbodyView
     - Photon.Pun.PhotonTransformView
@@ -172,11 +174,11 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1860}
+      Script: {instanceID: 1862}
     - Class: 114
-      Script: {instanceID: 1904}
+      Script: {instanceID: 8532}
     - Class: 114
-      Script: {instanceID: 3028}
+      Script: {instanceID: 8540}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -225,15 +227,15 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1624}
+      Script: {instanceID: 1594}
     - Class: 114
-      Script: {instanceID: 1628}
+      Script: {instanceID: 1626}
     - Class: 114
-      Script: {instanceID: 1680}
+      Script: {instanceID: 1630}
     - Class: 114
-      Script: {instanceID: 1860}
+      Script: {instanceID: 1682}
     - Class: 114
-      Script: {instanceID: 1904}
+      Script: {instanceID: 1862}
     - Class: 114
       Script: {instanceID: 2650}
     - Class: 114
@@ -241,9 +243,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3018}
     - Class: 114
-      Script: {instanceID: 3028}
+      Script: {instanceID: 3242}
     - Class: 114
-      Script: {instanceID: 3244}
+      Script: {instanceID: 3250}
     - Class: 114
       Script: {instanceID: 3316}
     - Class: 114
@@ -261,11 +263,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 7698}
     - Class: 114
-      Script: {instanceID: 8064}
+      Script: {instanceID: 7806}
     - Class: 114
-      Script: {instanceID: 56182}
+      Script: {instanceID: 8066}
     - Class: 114
-      Script: {instanceID: 175768}
+      Script: {instanceID: 8532}
+    - Class: 114
+      Script: {instanceID: 8536}
+    - Class: 114
+      Script: {instanceID: 8540}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -334,21 +340,21 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1624}
+      Script: {instanceID: 1594}
     - Class: 114
       Script: {instanceID: 1626}
     - Class: 114
       Script: {instanceID: 1628}
     - Class: 114
-      Script: {instanceID: 1680}
+      Script: {instanceID: 1630}
     - Class: 114
-      Script: {instanceID: 1730}
+      Script: {instanceID: 1682}
     - Class: 114
-      Script: {instanceID: 1860}
+      Script: {instanceID: 1732}
     - Class: 114
-      Script: {instanceID: 1894}
+      Script: {instanceID: 1862}
     - Class: 114
-      Script: {instanceID: 1904}
+      Script: {instanceID: 1896}
     - Class: 114
       Script: {instanceID: 2322}
     - Class: 114
@@ -360,9 +366,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3018}
     - Class: 114
-      Script: {instanceID: 3072}
+      Script: {instanceID: 3070}
     - Class: 114
-      Script: {instanceID: 3244}
+      Script: {instanceID: 3242}
     - Class: 114
       Script: {instanceID: 3316}
     - Class: 114
@@ -402,13 +408,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 7698}
     - Class: 114
-      Script: {instanceID: 8064}
+      Script: {instanceID: 7806}
     - Class: 114
-      Script: {instanceID: 8190}
+      Script: {instanceID: 8066}
     - Class: 114
-      Script: {instanceID: 8492}
+      Script: {instanceID: 8192}
     - Class: 114
-      Script: {instanceID: 56182}
+      Script: {instanceID: 8494}
+    - Class: 114
+      Script: {instanceID: 8532}
+    - Class: 114
+      Script: {instanceID: 8540}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -442,6 +452,12 @@ ScriptsOnlyBuild:
     - Class: 225
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 31f6917164cc3660e8d8eaf781cd3dcf
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: slipDown
   - hash:
       serializedVersion: 2
       Hash: 540882762544409cc4530e60db00e951
@@ -562,12 +578,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI
     namespaceName: UnityEngine.UI
     className: Shadow
-  - hash:
-      serializedVersion: 2
-      Hash: 4a64a9e631ff4d8aedf2650fec85e65b
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: CarController
   - hash:
       serializedVersion: 2
       Hash: f778e23b6ff26b8de4721be0eb1fa240
@@ -840,12 +850,6 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
-      Hash: c609aa3c03ea5dd18d2b86be9209a4c0
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: PowerUp
-  - hash:
-      serializedVersion: 2
       Hash: edfd497991d8226deea957e3eed0f241
     assemblyName: PhotonUnityNetworking.Demos
     namespaceName: Photon.Pun.Demo.PunBasics
@@ -910,6 +914,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking
     namespaceName: Photon.Pun
     className: PhotonView
+  - hash:
+      serializedVersion: 2
+      Hash: 239131677d00377134f2bfb4eeba8775
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: UICountdoown
   - hash:
       serializedVersion: 2
       Hash: c5fe63befa7cf68627647e85730b7b71
@@ -2154,6 +2164,12 @@ ScriptsOnlyBuild:
     className: ChatGui
   - hash:
       serializedVersion: 2
+      Hash: 9aad98220ed7283947113a6d4abba013
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: canvasManager
+  - hash:
+      serializedVersion: 2
       Hash: b0cfae71bddd2108f011bacb9dc32987
     assemblyName: PhotonUnityNetworking.Demos
     namespaceName: Photon.Pun.Demo.Cockpit
@@ -2370,19 +2386,25 @@ ScriptsOnlyBuild:
     className: UnityOnSliderValueChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 9aad98220ed7283947113a6d4abba013
+      Hash: 3a7a183f29fcec52fe114f5ae46c7c3b
     assemblyName: Assembly-CSharp
     namespaceName: 
-    className: canvasManager
+    className: PowerUp
   - hash:
       serializedVersion: 2
-      Hash: 239131677d00377134f2bfb4eeba8775
+      Hash: d29d25881221bbd52c74901d6b683b47
     assemblyName: Assembly-CSharp
     namespaceName: 
-    className: UICountdoown
+    className: powerUpManager
+  - hash:
+      serializedVersion: 2
+      Hash: 66c73f05c9291d14ded68d4c5749e9c2
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: CarController
   platform: 19
   scenePathNames:
   - Assets/Scenes/start.unity
   - Assets/Scenes/Track1_Grassy.unity
   - Assets/Scenes/Singleplay.unity
-  playerPath: C:/Users/akash/Desktop/KartFinalProjectV2Package/FuriousKart.exe
+  playerPath: C:/Users/akash/Desktop/LUCSA GAME/FuriousKart.exe

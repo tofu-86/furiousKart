@@ -1195,9 +1195,10 @@ GameObject:
   - component: {fileID: 997301263292477930}
   - component: {fileID: 6698073211363115282}
   - component: {fileID: 4483772026676805418}
+  - component: {fileID: 1979351761412992601}
   m_Layer: 0
   m_Name: Red Car
-  m_TagString: RedCar
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1270,6 +1271,7 @@ MonoBehaviour:
     FLwheel: {fileID: 4504159693504071605}
     RRwheel: {fileID: 5447129650637925522}
     RLwheel: {fileID: 9169316191847843392}
+  kartCollider: {fileID: 6454116187477046356}
   wheelSmoke:
     FRwheel: {fileID: 0}
     FLwheel: {fileID: 0}
@@ -1288,6 +1290,7 @@ MonoBehaviour:
   canvasScreen: {fileID: 7998747263012235942}
   currentLapTime: 0
   bestLapTime: 0
+  slipDown: 0
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -1408,6 +1411,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carController: {fileID: 633088076698366719}
+--- !u!65 &1979351761412992601
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856655786214103466}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6706227, y: 0.5873872, z: 4.3006043}
+  m_Center: {x: 0.0025981069, y: 0.5640439, z: 0.12866044}
 --- !u!1 &6325800806193641968
 GameObject:
   m_ObjectHideFlags: 0

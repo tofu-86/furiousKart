@@ -870,9 +870,10 @@ GameObject:
   - component: {fileID: 9102451290811703680}
   - component: {fileID: 5796589178615621369}
   - component: {fileID: -7532042222127478406}
+  - component: {fileID: 970246071725958872}
   m_Layer: 0
   m_Name: Green Car
-  m_TagString: GreenCar
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -945,6 +946,7 @@ MonoBehaviour:
     FLwheel: {fileID: 7529959469761544352}
     RRwheel: {fileID: 4452158262610487863}
     RLwheel: {fileID: 3597201505344571569}
+  kartCollider: {fileID: 5997733580233912433}
   wheelSmoke:
     FRwheel: {fileID: 0}
     FLwheel: {fileID: 0}
@@ -963,6 +965,7 @@ MonoBehaviour:
   canvasScreen: {fileID: 7878646241263934593}
   currentLapTime: 0
   bestLapTime: 0
+  slipDown: 0
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -1070,6 +1073,27 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!65 &970246071725958872
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3495912473202610650}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6706227, y: 0.5873872, z: 4.3006043}
+  m_Center: {x: 0.0025981069, y: 0.5640439, z: 0.12866044}
 --- !u!1 &4015232558446855887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,7 +2266,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.6706227, y: 0.5873872, z: 4.3006043}
   m_Center: {x: 0.0025981069, y: 0.5640439, z: 0.12866044}
