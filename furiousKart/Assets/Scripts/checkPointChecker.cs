@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class checkPointChecker : MonoBehaviour
 {
-
-
-
     public CarController carController; // Reference to script
-
-
+    
     private void OnTriggerEnter(Collider other) // method called when "other" collider enters the trigger collider.
     {
         if (other.tag == "Checkpoint") // checking collider tag
