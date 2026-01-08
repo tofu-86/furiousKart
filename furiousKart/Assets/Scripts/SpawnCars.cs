@@ -111,13 +111,7 @@ public class SpawnCars : MonoBehaviourPunCallbacks
 
                 }
             }
-
-
-
         }
-
-
-
     }
 
     public void BeginGame()
