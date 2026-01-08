@@ -41,9 +41,6 @@ public class CarController : MonoBehaviourPunCallbacks
     public float engineStrength = 1200f;
     public float brakeStrength;
 
-
-   
-
     //generated values
     public float slipAngle;
     public float movingDirection;
@@ -55,8 +52,6 @@ public class CarController : MonoBehaviourPunCallbacks
     WheelFrictionCurve wfcRearF = new WheelFrictionCurve();
     WheelFrictionCurve wfcFrontF = new WheelFrictionCurve();
     WheelFrictionCurve wfcFrontS = new WheelFrictionCurve();
-
-
 
     // checkpoint variables
     public int nextCheckpoint;
@@ -79,26 +74,16 @@ public class CarController : MonoBehaviourPunCallbacks
     {
         rb = gameObject.GetComponent<Rigidbody>();
         //InstantiateSmoke();
-
         photonView.RPC("syncSmoke", RpcTarget.All,gameObject.GetComponent<PhotonView>().ViewID);
-
         resetWheelValues();
-
-
     }
-
-
-
 
     [PunRPC]
     void syncSmoke(int id)
     {
         CarController kartController = PhotonView.Find(id).gameObject.GetComponent<CarController>();
-
         kartController.InstantiateSmoke();
     }
-
-
     //function to copy smoke onto wheels.
     void InstantiateSmoke()
     {
@@ -200,11 +185,8 @@ public class CarController : MonoBehaviourPunCallbacks
             applyBrake();
             CheckParticles();
             UpdateWheelPos();
-            bannanaSlip();
-
-       
+            bannanaSlip();       
         }
-
 
         void checkInput()
         {
@@ -212,13 +194,8 @@ public class CarController : MonoBehaviourPunCallbacks
             throttleInput = Input.GetAxis("Vertical"); // checks W and S or Up arrow and Down arrow
             steeringInput = Input.GetAxis("Horizontal");// checks A or D or right arrow and left arrow
 
-
-
             //Drift angle stuff
             slipAngle = Vector3.Angle(transform.forward, rb.velocity - transform.forward);
-
-
-
 
             /**Vector3.dot calcultes the product of two vectors;
             in this case it takes transform.forward, the dirction the object is facing
@@ -231,8 +208,6 @@ public class CarController : MonoBehaviourPunCallbacks
             rigidbody is facing and so its movng backward.
             **/
             movingDirection = Vector3.Dot(transform.forward, rb.velocity);
-
-
 
             //Braking checks
             if (movingDirection < -0.5f && throttleInput > 0) //If movingDirection is negative (moving backward) & a positive throttle input is detected
@@ -261,13 +236,8 @@ public class CarController : MonoBehaviourPunCallbacks
                 Debug.Log("helo");
                 resetKart(); // calls function resetKart;
             }
-
-
-
         }
-
     }
-
     void resetKart()
     {
         int lastCheckpoint = nextCheckpoint - 1;  // getting the last Checkpoint
@@ -275,12 +245,10 @@ public class CarController : MonoBehaviourPunCallbacks
         {
             lastCheckpoint = checkpointManager.instance.checkPointArray.Length - 1; // this will get the value of the last checkpoint.
         }
-
         transform.position = checkpointManager.instance.checkPointArray[lastCheckpoint].transform.position; // moving the position of the model and rigidbody to the checkpoint location. 
         rb.transform.position = transform.position = checkpointManager.instance.checkPointArray[lastCheckpoint].transform.position;
 
         rb.velocity = Vector3.zero; // sets velocity to zero to account for momentum that the car may have when reset.
-
 
     }
     /*
@@ -322,13 +290,9 @@ public class CarController : MonoBehaviourPunCallbacks
             // once off, values for wheels reset.
             resetWheelValues();
         }
-
-
     }
-
     void applyBrake()
     {
-
         /*
          * brakeTorque is a propery of WheelCollider
          * the value of brakeTorque is updated for each collider when a brakeInput is generated
@@ -337,11 +301,8 @@ public class CarController : MonoBehaviourPunCallbacks
          */
 
         colliders.FRwheel.brakeTorque = brakeInput * brakeStrength * 0.7f;
-
         colliders.FLwheel.brakeTorque = brakeInput * brakeStrength * 0.7f;
-       
         colliders.RRwheel.brakeTorque = brakeInput * brakeStrength * 0.3f;
-
         colliders.RLwheel.brakeTorque = brakeInput * brakeStrength * 0.3f;
 
     }
@@ -442,29 +403,20 @@ public class CarController : MonoBehaviourPunCallbacks
         {
             wheelSmoke.RLwheel.Stop();
         }
-
-
     }
-
-
-
     void UpdateWheelPos()
-
     {
         //using function to move wheels to given position
         UpdateWheel(colliders.FRwheel, wheelMeshes.FRwheel);
         UpdateWheel(colliders.FLwheel, wheelMeshes.FLwheel);
         UpdateWheel(colliders.RRwheel, wheelMeshes.RRwheel);
         UpdateWheel(colliders.RLwheel, wheelMeshes.RLwheel);
-
     }
-
     void UpdateWheel(WheelCollider wheelC, MeshRenderer wheelM) //Wheelcollider wheelC represents the physics wheel,
                                                                 //meshrender reprents the visual model of the wheel. 
     {
         Quaternion quat; //rotation of the wheel
         Vector3 position;  //position of the wheel 
-
         wheelC.GetWorldPose(out position, out quat); //unity function to get rotation and position of wheels
         wheelM.transform.position = position;  //matches wheels to position and rotation according to getwoldpos.
         wheelM.transform.rotation = quat;      //matches the wheelcollider rotation to the visual model of the wheel. 
@@ -474,19 +426,14 @@ public class CarController : MonoBehaviourPunCallbacks
     public void checkPointHit(int checkPointNumber) // takes an integer parameter as the checkPointNumber
     {
         Debug.Log(checkPointNumber);
-
         if(checkPointNumber == nextCheckpoint) // checking whether next checkpoint is the expected one
         {
             nextCheckpoint++; // increment nextCheckpoint
-
             if(nextCheckpoint == checkpointManager.instance.checkPointArray.Length) // checking if the next checkpoint is the end.
             {
                 nextCheckpoint = 0; // reset nextCheckpoint therefore lap completed
                 lapComplete();
-
-                
             }
-
         }
     }
 
@@ -504,12 +451,10 @@ public class CarController : MonoBehaviourPunCallbacks
         if (currentLap <= checkpointManager.instance.totalLapCount) // checking if there are still laps to be completed.
         {
             currentLapTime = 0; //  reset to zero as lap has been completed.
-
             var timeSpan = System.TimeSpan.FromSeconds(bestLapTime); // converts bestLapTime to timespan
             canvasScreen.bestLapTimeText.text = string.Format("{0:00}m{1:00}.{2:000}s", timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds); // formatting time and setting it as bestTime on canvas
 
             canvasScreen.LapDisplay.text = currentLap + "/" + checkpointManager.instance.totalLapCount; // Changing text on canvas
-
         }
         else
         {
@@ -518,19 +463,8 @@ public class CarController : MonoBehaviourPunCallbacks
             kartCollider.enabled = false;
             
         }
-
-
-
-
-
     }
-
 }
-
-
-
-
-
 
 //class to hold wheels, serializable field to make it editble in unity.
 [System.Serializable]
