@@ -1,6 +1,6 @@
 # furiousKart - A Level NEA project  
 
-
+A multiplayer mario kart ish drifting game!  
 
 It was scraped together in a few months and was a really fun project to work on. There are LOADs of bugs and non working bits, however it is still a rather fun game to download and play with your friends.  
 
