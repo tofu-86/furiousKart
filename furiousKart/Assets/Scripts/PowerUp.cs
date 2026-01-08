@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
-
-
 {
-
     public GameObject afterEffect; // reference to effect.
-
-
+    
     [SerializeField]
     private GameObject powerupArt; // reference to art to disable later.
-
-    
-
     
     [SerializeField]
     private float WaitSeconds = 5f;
